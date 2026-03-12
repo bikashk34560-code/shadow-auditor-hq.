@@ -1,17 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>SHADOW AUDITOR HQ</title>
+    <meta charset="UTF-8">
+    <title>SHADOW AUDITOR | OS</title>
     <style>
-        body { background: black; color: #0f0; font-family: monospace; text-align: center; padding: 50px; }
-        .box { border: 2px solid #0f0; padding: 20px; display: inline-block; }
+        body { background: #000; color: #0f0; font-family: monospace; margin: 0; padding: 10px; }
+        .header { border-bottom: 2px solid #0f0; text-align: center; padding: 10px; margin-bottom: 20px; }
+        .grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
+        .box { border: 1px solid #0f0; padding: 15px; background: rgba(0, 255, 0, 0.05); }
+        .tag { background: #0f0; color: #000; font-weight: bold; padding: 2px 5px; font-size: 12px; }
+        input { width: 90%; background: transparent; border: none; border-bottom: 1px solid #0f0; color: #0f0; outline: none; margin-top: 10px; }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h1>SHADOW AUDITOR HQ</h1>
-        <p>STATUS: SYSTEM BOOTING...</p>
-        <p>Boss, Cloud Processor is warming up.</p>
+    <div class="header"><h1>SHADOW_AUDITOR | COMMAND_CENTER</h1></div>
+    <div class="grid">
+        <div class="box"><span class="tag">STRATEGIST</span><p>Deepshikha: Boss, system is ready. Jala Amrit business logic loading...</p></div>
+        <div class="box"><span class="tag">BOSS_INPUT</span><p>Enter Command:</p><input type="text" placeholder="Direct order..." autofocus></div>
     </div>
 </body>
 </html>

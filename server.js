@@ -1,36 +1,38 @@
-const bossInput = document.getElementById('bossInput');
-const intel = document.getElementById('intel');
-const vuln = document.getElementById('vuln');
-const term = document.getElementById('term');
-const logs = document.getElementById('logs');
+const express = require('express');
+const fetch = require('node-fetch');
+const path = require('path');
+const app = express();
+const port = process.env.PORT || 3000;
 
-bossInput.addEventListener('keypress', async (e) => {
-    if (e.key === 'Enter') {
-        const cmd = bossInput.value;
-        bossInput.value = '';
+app.use(express.json());
+app.use(express.static('.'));
 
-        // Boxes ko 'Scanning' mode mein daalna
-        intel.innerHTML = "> [PROCESS] SCANNING GLOBAL INTEL...";
-        vuln.innerHTML = "> [PROCESS] ANALYZING VULNERABILITIES...";
-        term.innerHTML = "> [PROCESS] PREPARING TERMINAL COMMANDS...";
-        logs.innerHTML += `\n> Incoming Order: ${cmd}`;
+// AI Engine Route
+app.post('/execute', async (req, res) => {
+    const { command } = req.body;
+    const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
-        try {
-            // Hamare naye server se AI response mangna
-            const response = await fetch('/execute', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ command: cmd })
-            });
-            const data = await response.json();
-            
-            // AI ka jawab boxes mein fit karna
-            intel.innerHTML = `> [INTEL DATA]\n${data.result.split('\n')[0] || data.result}`;
-            vuln.innerHTML = `> [RESEARCH]\n${data.result.split('\n')[1] || "Analysis Complete."}`;
-            term.innerHTML = `> [COMMAND]\n${data.result.substring(data.result.length / 2)}`;
-            logs.innerHTML += `\n> Task Executed Successfully.`;
-        } catch (err) {
-            intel.innerHTML = "> ERROR: BRAIN_NOT_RESPONDING. Deploy Web Service first.";
-        }
+    try {
+        const response = await fetch('https://models.inference.ai.azure.com/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${GITHUB_TOKEN}`
+            },
+            body: JSON.stringify({
+                messages: [{ role: 'user', content: command }],
+                model: 'gpt-4o',
+                max_tokens: 1000
+            })
+        });
+
+        const data = await response.json();
+        res.json({ result: data.choices[0].message.content });
+    } catch (error) {
+        res.status(500).json({ result: "ERROR: Brain connection failed." });
     }
+});
+
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });

@@ -9,56 +9,22 @@
         .grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; height: 85vh; gap: 10px; }
         .box { border: 1px solid #0f0; padding: 10px; background: rgba(0, 20, 0, 0.8); overflow-y: auto; position: relative; box-shadow: 0 0 10px #0f0; }
         .tag { position: absolute; top: 0; right: 0; background: #0f0; color: #000; font-size: 10px; padding: 2px 5px; font-weight: bold; }
-        .log { font-size: 12px; white-space: pre-wrap; margin-bottom: 5px; }
+        .log { font-size: 12px; white-space: pre-wrap; margin-top: 15px; }
         #input-area { width: 100%; height: 10vh; display: flex; align-items: center; border-top: 1px solid #0f0; margin-top: 10px; }
         input { width: 100%; background: transparent; border: none; color: #0f0; font-size: 18px; outline: none; font-family: inherit; }
-        .loading { animation: blink 1s infinite; }
-        @keyframes blink { 50% { opacity: 0; } }
     </style>
 </head>
 <body>
     <div class="grid">
-        <div class="box"><span class="tag">INTEL_SCOUT</span><div id="intel" class="log">> SYSTEM READY...</div></div>
-        <div class="box"><span class="tag">VULN_RESEARCH</span><div id="vuln" class="log">> WAITING FOR TARGET DATA...</div></div>
-        <div class="box"><span class="tag">TERMINAL_AGENT</span><div id="term" class="log">> KALI_CLOUD_LINK: ACTIVE</div></div>
-        <div class="box"><span class="tag">NETWORK_LOGS</span><div id="logs" class="log">> ENCRYPTION: AES-256...</div></div>
+        <div class="box"><span class="tag">INTEL_SCOUT</span><div id="intel" class="log">> STANDBY...</div></div>
+        <div class="box"><span class="tag">VULN_RESEARCH</span><div id="vuln" class="log">> WAITING...</div></div>
+        <div class="box"><span class="tag">TERMINAL_AGENT</span><div id="term" class="log">> READY.</div></div>
+        <div class="box"><span class="tag">NETWORK_LOGS</span><div id="logs" class="log">> ENCRYPTION: ACTIVE</div></div>
     </div>
     <div id="input-area">
         <span style="padding-right:10px;">BOSS_ORDER_#</span>
-        <input type="text" id="bossInput" placeholder="Enter Order (e.g. 'Audit target.com' or 'Find Leaks')">
+        <input type="text" id="bossInput" placeholder="Enter Order...">
     </div>
     <script src="script.js"></script>
 </body>
 </html>
-const bossInput = document.getElementById('bossInput');
-const intel = document.getElementById('intel');
-const vuln = document.getElementById('vuln');
-const term = document.getElementById('term');
-const logs = document.getElementById('logs');
-
-bossInput.addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') {
-        const cmd = this.value;
-        this.value = '';
-
-        // Sabhi boxes mein activity dikhana
-        intel.innerHTML += `\n> Analyzing: ${cmd}...`;
-        vuln.innerHTML += `\n> Scanning vulnerabilities for "${cmd}"`;
-        term.innerHTML += `\n> Generating Kali scripts for "${cmd}"`;
-        logs.innerHTML += `\n> Routing through Secure Tunnel... [OK]`;
-
-        // Yahan se Powerful Model (API) call hoga
-        executeMasterAI(cmd);
-    }
-});
-
-async function executeMasterAI(prompt) {
-    // Ye function hamare Backend Server se connect karega jo API key chhupaye rakhta hai
-    intel.innerHTML += `\n<span class="loading">...FETCHING DATA FROM DARK WEB...</span>`;
-    
-    // Abhi ke liye AI response simulation (Jab tak server link nahi hota)
-    setTimeout(() => {
-        intel.innerHTML = `> [!] INTEL SECURED: Found potential entry points for ${prompt}`;
-        vuln.innerHTML = `> [!] VULN REPORT: Cross-referencing CVE database... DONE.`;
-    }, 2000);
-}
